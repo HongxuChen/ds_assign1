@@ -163,3 +163,7 @@ docs/_build/
 # PyBuilder
 target/
 
+*.pdf
+*.jpg
+*.jpeg
+*.png
