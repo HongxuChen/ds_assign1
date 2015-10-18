@@ -56,4 +56,7 @@ class Graph(object):
 if __name__ == '__main__':
     g = Graph(0)
     g.graph_generator()
-    g.save_figure()
+    l = len(g.graph.nodes())
+    # l = len(g.graph.edges())
+    print(l)
+    # g.save_figure()
