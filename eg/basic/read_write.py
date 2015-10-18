@@ -3,7 +3,9 @@
 Read and write graphs.
 """
 
-from networkx import *
+import sys
+
+from networkx import grid_2d_graph, write_adjlist, write_edgelist, read_edgelist
 
 G = grid_2d_graph(5, 5)  # 5x5 grid
 try:  # Python 2.6+

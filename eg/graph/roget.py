@@ -21,20 +21,9 @@ References.
 
 """
 from __future__ import print_function
-__author__ = """Brendt Wohlberg\nAric Hagberg (hagberg@lanl.gov)"""
-__date__ = "$Date: 2005-04-01 07:56:22 -0700 (Fri, 01 Apr 2005) $"
-__credits__ = """"""
-__revision__ = ""
-#    Copyright (C) 2004 by 
-#    Aric Hagberg <hagberg@lanl.gov>
-#    Dan Schult <dschult@colgate.edu>
-#    Pieter Swart <swart@lanl.gov>
-#    All rights reserved.
-#    BSD license.
-
-from networkx import *
-import re
 import sys
+import re
+
 
 def roget_graph():
     """ Return the thesaurus graph from the roget.dat example in
@@ -42,41 +31,42 @@ def roget_graph():
     """
     # open file roget_dat.txt.gz (or roget_dat.txt)
     import gzip
-    fh=gzip.open('roget_dat.txt.gz','r')
+    fh = gzip.open('roget_dat.txt.gz', 'r')
 
-    G=DiGraph()
+    G = DiGraph()
 
     for line in fh.readlines():
         line = line.decode()
-        if line.startswith("*"): # skip comments
+        if line.startswith("*"):  # skip comments
             continue
-        if line.startswith(" "): # this is a continuation line, append
-            line=oldline+line
-        if line.endswith("\\\n"): # continuation line, buffer, goto next
-            oldline=line.strip("\\\n")
+        if line.startswith(" "):  # this is a continuation line, append
+            line = oldline + line
+        if line.endswith("\\\n"):  # continuation line, buffer, goto next
+            oldline = line.strip("\\\n")
             continue
 
-        (headname,tails)=line.split(":")
+        (headname, tails) = line.split(":")
 
         # head
-        numfind=re.compile("^\d+") # re to find the number of this word
-        head=numfind.findall(headname)[0] # get the number
-    
+        numfind = re.compile("^\d+")  # re to find the number of this word
+        head = numfind.findall(headname)[0]  # get the number
+
         G.add_node(head)
 
         for tail in tails.split():
-            if head==tail:
-                print("skipping self loop",head,tail, file=sys.stderr)
-            G.add_edge(head,tail)
+            if head == tail:
+                print("skipping self loop", head, tail, file=sys.stderr)
+            G.add_edge(head, tail)
 
-    return G            
+    return G
+
 
 if __name__ == '__main__':
     from networkx import *
-    G=roget_graph()
-    print("Loaded roget_dat.txt containing 1022 categories.")
-    print("digraph has %d nodes with %d edges"\
-          %(number_of_nodes(G),number_of_edges(G)))
-    UG=G.to_undirected()
-    print(number_connected_components(UG),"connected components")
 
+    G = roget_graph()
+    print("Loaded roget_dat.txt containing 1022 categories.")
+    print("digraph has %d nodes with %d edges" \
+          % (number_of_nodes(G), number_of_edges(G)))
+    UG = G.to_undirected()
+    print(number_connected_components(UG), "connected components")

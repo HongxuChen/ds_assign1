@@ -129,3 +129,5 @@ target/
 *.jpg
 *.jpeg
 *.png
+
+grid.edgelist

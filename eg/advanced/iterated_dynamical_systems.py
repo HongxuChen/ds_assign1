@@ -99,12 +99,12 @@ def digitsrep(n, b=10):
     if n <= 0:
         return [0]
     maxpow = int(floor(log(n) / log(b) + mach_eps))
-    pow = maxpow
-    while pow >= 0:
-        x = int(floor(n // b ** pow))
+    pow_res = maxpow
+    while pow_res >= 0:
+        x = int(floor(n // b ** pow_res))
         dlist.append(x)
-        n = n - x * b ** pow
-        pow = pow - 1
+        n -= x * b ** pow_res
+        pow_res -= 1
     return dlist
 
 

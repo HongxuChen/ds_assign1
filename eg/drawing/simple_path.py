@@ -6,11 +6,11 @@ You must have matplotlib for this to work.
 try:
     import matplotlib.pyplot as plt
 except:
-    raise 
-    
+    raise
+
 import networkx as nx
 
-G=nx.path_graph(8)
+G = nx.path_graph(8)
 nx.draw(G)
-plt.savefig("simple_path.png") # save as png
-plt.show() # display
+plt.savefig("simple_path.png")  # save as png
+plt.show()  # display

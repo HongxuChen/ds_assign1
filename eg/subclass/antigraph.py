@@ -10,13 +10,15 @@ and biconnected_components algorithms but might also work for other
 algorithms.
 
 """
+
+### FIXME
+
 #    Copyright (C) 2015 by 
 #    Jordi Torrents <jtorrents@milnou.net>
 #    All rights reserved.
 #    BSD license.
 import networkx as nx
 from networkx.exception import NetworkXError
-
 
 __author__ = """\n""".join(['Jordi Torrents <jtorrents@milnou.net>'])
 
@@ -37,8 +39,10 @@ class AntiGraph(nx.Graph):
     """
 
     all_edge_dict = {'weight': 1}
+
     def single_edge_dict(self):
         return self.all_edge_dict
+
     edge_attr_dict_factory = single_edge_dict
 
     def __getitem__(self, n):
@@ -58,7 +62,6 @@ class AntiGraph(nx.Graph):
         return dict((node, self.all_edge_dict) for node in
                     set(self.adj) - set(self.adj[n]) - set([n]))
 
-
     def neighbors(self, n):
         """Return an iterator over all neighbors of node n in the 
            dense graph.
@@ -67,7 +70,7 @@ class AntiGraph(nx.Graph):
         try:
             return iter(set(self.adj) - set(self.adj[n]) - set([n]))
         except KeyError:
-            raise NetworkXError("The node %s is not in the graph."%(n,))
+            raise NetworkXError("The node %s is not in the graph." % (n,))
 
     def degree(self, nbunch=None, weight=None):
         """Return an iterator for (node, degree) in the dense graph.
@@ -106,21 +109,21 @@ class AntiGraph(nx.Graph):
         """
         if nbunch is None:
             nodes_nbrs = ((n, {v: self.all_edge_dict for v in
-                            set(self.adj) - set(self.adj[n]) - set([n])})
-                            for n in self.nodes())
+                               set(self.adj) - set(self.adj[n]) - set([n])})
+                          for n in self.nodes())
         else:
-            nodes_nbrs= ((n, {v: self.all_edge_dict for v in
-                            set(self.nodes()) - set(self.adj[n]) - set([n])})
-                            for n in self.nbunch_iter(nbunch))
+            nodes_nbrs = ((n, {v: self.all_edge_dict for v in
+                               set(self.nodes()) - set(self.adj[n]) - set([n])})
+                          for n in self.nbunch_iter(nbunch))
 
         if weight is None:
-            for n,nbrs in nodes_nbrs:
-                yield (n,len(nbrs)+(n in nbrs)) # return tuple (n,degree)
+            for n, nbrs in nodes_nbrs:
+                yield (n, len(nbrs) + (n in nbrs))  # return tuple (n,degree)
         else:
             # AntiGraph is a ThinGraph so all edges have weight 1
-            for n,nbrs in nodes_nbrs:
+            for n, nbrs in nodes_nbrs:
                 yield (n, sum((nbrs[nbr].get(weight, 1) for nbr in nbrs)) +
-                              (n in nbrs and nbrs[n].get(weight, 1)))
+                       (n in nbrs and nbrs[n].get(weight, 1)))
 
     def adjacency_iter(self):
         """Return an iterator of (node, adjacency set) tuples for all nodes
@@ -144,7 +147,7 @@ if __name__ == '__main__':
     # Build several pairs of graphs, a regular graph
     # and the AntiGraph of it's complement, which behaves
     # as if it were the original graph.
-    Gnp = nx.gnp_random_graph(20,0.8)
+    Gnp = nx.gnp_random_graph(20, 0.8)
     Anp = AntiGraph(nx.complement(Gnp))
     Gd = nx.davis_southern_women_graph()
     Ad = AntiGraph(nx.complement(Gd))
@@ -168,7 +171,7 @@ if __name__ == '__main__':
         node = list(G.nodes())[0]
         nodes = list(G.nodes())[1:4]
         assert G.degree(node) == A.degree(node)
-        assert sum(d for n,d in G.degree()) == sum(d for n,d in A.degree())
+        assert sum(d for n, d in G.degree()) == sum(d for n, d in A.degree())
         # AntiGraph is a ThinGraph, so all the weights are 1
-        assert sum(d for n,d in A.degree()) == sum(d for n,d in A.degree(weight='weight'))
-        assert sum(d for n,d in G.degree(nodes)) == sum(d for n,d in A.degree(nodes))
+        assert sum(d for n, d in A.degree()) == sum(d for n, d in A.degree(weight='weight'))
+        assert sum(d for n, d in G.degree(nodes)) == sum(d for n, d in A.degree(nodes))

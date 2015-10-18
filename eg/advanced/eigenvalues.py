@@ -18,5 +18,5 @@ e = numpy.linalg.eigvals(L.A)
 print("Largest eigenvalue:", max(e))
 print("Smallest eigenvalue:", min(e))
 plt.hist(e, bins=100)  # histogram with 100 bins
-plt.xlim(0, 2)  # eigenvalues between 0 and 2
+plt.xlim(0, 3)  # eigenvalues between 0 and 2
 plt.show()

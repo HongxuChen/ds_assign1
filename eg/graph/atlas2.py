@@ -19,16 +19,15 @@ import networkx as NX
 from networkx.generators.atlas import *
 from pygraphviz import *
 
-atlas=graph_atlas_g()[0:20]
-
+atlas = graph_atlas_g()[0:20]
 
 for G in atlas:
     print("graph %s has %d nodes with %d edges"
-          %(G.name,NX.number_of_nodes(G),NX.number_of_edges(G)))
-    A=NX.to_agraph(G)
-    A.graph_attr['label']=G.name 
+          % (G.name, NX.number_of_nodes(G), NX.number_of_edges(G)))
+    A = NX.to_agraph(G)
+    A.graph_attr['label'] = G.name
     # set default node attributes
-    A.node_attr['color']='red'
-    A.node_attr['style']='filled'
-    A.node_attr['shape']='circle'
-    A.write(G.name+'.dot')
+    A.node_attr['color'] = 'red'
+    A.node_attr['style'] = 'filled'
+    A.node_attr['shape'] = 'circle'
+    A.write(G.name + '.dot')

@@ -1,15 +1,10 @@
 #!/usr/bin/env python
 """
 Compute some network properties for the lollipop graph.
+http://mathworld.wolfram.com/LollipopGraph.html
 """
-#    Copyright (C) 2004 by 
-#    Aric Hagberg <hagberg@lanl.gov>
-#    Dan Schult <dschult@colgate.edu>
-#    Pieter Swart <swart@lanl.gov>
-#    All rights reserved.
-#    BSD license.
-
 from networkx import *
+import matplotlib.pyplot as plt
 
 G = lollipop_graph(4, 6)
 
@@ -45,3 +40,7 @@ print("eccentricity: %s" % eccentricity(G))
 print("center: %s" % center(G))
 print("periphery: %s" % periphery(G))
 print("density: %s" % density(G))
+
+pos = spring_layout(G)
+draw_networkx(G, pos)
+plt.show()
