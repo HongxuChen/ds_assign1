@@ -11,6 +11,7 @@ http://en.wikipedia.org/wiki/Heavy_metal_umlaut
 import networkx as nx
 
 try:
+    # noinspection PyUnresolvedReferences
     import pylab
 except ImportError:
     pass

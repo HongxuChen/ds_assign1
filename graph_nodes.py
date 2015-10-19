@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import os
 import conf
 import networkx as nx
@@ -23,9 +24,18 @@ class Graph(object):
                 id_list = line.split()[1:]
                 yield [int(item) for item in id_list]
 
+    def info(self):
+        pass
+        # print(sum(1 for _ in nx.find_cliques(self.graph)))
+        # print(len(list(nx.find_cliques(self.graph))))
+        # print(nx.clustering(self.graph))
+        # print(nx.max_clique(self.graph))
+
     def graph_generator(self):
         edges = self.edges_reader()
         self.graph.add_edges_from(edges)
+        for n in self.graph.nodes():
+            self.graph.add_edge(self.node_id, n)
 
     def save_figure(self, fmt='pdf'):
         pos = nx.spectral_layout(self.graph)
@@ -55,8 +65,10 @@ class Graph(object):
 
 if __name__ == '__main__':
     g = Graph(0)
+    graph = g.graph
     g.graph_generator()
-    l = len(g.graph.nodes())
+    l = len(graph.nodes())
     # l = len(g.graph.edges())
-    print(l)
+    # print(l)
+    g.info()
     # g.save_figure()
