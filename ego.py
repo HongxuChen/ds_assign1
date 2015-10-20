@@ -33,11 +33,11 @@ class Ego(object):
     def graph_generator(self):
         pickle_name = self.get_fname('pickle')
         if os.path.isfile(pickle_name):
-            self._logger.debug('load {}'.format(pickle_name))
+            self._logger.info('load {}'.format(pickle_name))
             with open(pickle_name, 'rb') as handler:
                 self.graph = pickle.load(handler)
         else:
-            self._logger.debug('create {}'.format(pickle_name))
+            self._logger.info('create {}'.format(pickle_name))
             edges = self.edges_reader()
             self.graph.add_edges_from(edges)
             for n in self.graph.nodes():
@@ -76,6 +76,3 @@ if __name__ == '__main__':
     graph = ego.graph
     ego.graph_generator()
     l = len(graph.nodes())
-    # l = len(g.graph.edges())
-    # print(l)
-    # g.save_figure()

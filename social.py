@@ -9,13 +9,22 @@ import conf
 import ego
 from graph_info import GraphInfo
 import log_helper
+import gzip
 
 
 class Social(object):
     def __init__(self, ego_list):
         self.ego_list = ego_list
         self.graph = nx.Graph()
-        self.generate_from_ego()
+        # self.generate_from_ego()
+
+    def generate_from_combined(self):
+        gzip_file = os.path.join(conf.data_dir, conf.combined_fname)
+        with gzip.open(gzip_file, 'r') as gzip_data:
+            for l in gzip_data:
+                edges = l.split()
+                assert (len(edges) == 2)
+                self.graph.add_edge(*edges)
 
     def generate_from_ego(self):
         for ego_id in self.ego_list:
@@ -40,5 +49,6 @@ if __name__ == '__main__':
     log_helper.init_logger()
     ego_list = Social.collect_ego_list()
     social = Social(ego_list)
+    social.generate_from_combined()
     g_info = GraphInfo(social.graph)
     g_info.info()
