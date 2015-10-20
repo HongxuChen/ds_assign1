@@ -2,7 +2,6 @@
 from __future__ import print_function
 
 import networkx as nx
-import sys
 
 
 class GraphInfo(object):
@@ -15,13 +14,16 @@ class GraphInfo(object):
         print('Average clustering coefficient {:>50}'.format(nx.average_clustering(self.graph)))
         # print(nx.clustering(self.graph))
         # diameter
-        shortest_path_dict_dict = nx.all_pairs_shortest_path_length(self.graph)
-        diameter = 0
-        for shortest_path_dict in shortest_path_dict_dict.values():
-            current_shortest = sorted(shortest_path_dict.values(), reverse=True)[0]
-            if diameter < current_shortest:
-                diameter = current_shortest
-        print('diameter: {}'.format(diameter))
+        # shortest_path_dict_dict = nx.all_pairs_shortest_path_length(self.graph)
+        # diameter = 0
+        # for shortest_path_dict in shortest_path_dict_dict.values():
+        #     current_shortest = sorted(shortest_path_dict.values(), reverse=True)[0]
+        #     if diameter < current_shortest:
+        #         diameter = current_shortest
+        # print('diameter: {}'.format(diameter))
+        # triangles
+        triangles_dict = nx.triangles(self.graph)
+        print('triangles: {}'.format(sum([v for v in triangles_dict.values()])))
 
         if self.graph.is_directed():
             edges_in_wcc = set()
