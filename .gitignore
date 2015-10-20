@@ -131,3 +131,4 @@ target/
 *.png
 
 grid.edgelist
+*.pickle

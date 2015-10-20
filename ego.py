@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 from __future__ import print_function
 import os
-import conf
+import pickle
+
 import networkx as nx
 import matplotlib.pyplot as plt
 
+import conf
 
-class Graph(object):
+
+class Ego(object):
     def __init__(self, node_id):
         self.node_id = str(node_id)
         self.dir = conf.data_dir
@@ -25,17 +28,26 @@ class Graph(object):
                 yield [int(item) for item in id_list]
 
     def info(self):
-        pass
+        print(len(self.graph.nodes()))
+        print(len(self.graph.edges()))
         # print(sum(1 for _ in nx.find_cliques(self.graph)))
         # print(len(list(nx.find_cliques(self.graph))))
-        # print(nx.clustering(self.graph))
+        print(nx.clustering(self.graph))
+        print(nx.average_clustering(self.graph))
         # print(nx.max_clique(self.graph))
 
     def graph_generator(self):
-        edges = self.edges_reader()
-        self.graph.add_edges_from(edges)
-        for n in self.graph.nodes():
-            self.graph.add_edge(self.node_id, n)
+        pickle_name = self.get_fname('pickle')
+        if os.path.isfile(pickle_name):
+            with open(pickle_name, 'rb') as handler:
+                self.graph = pickle.load(handler)
+        else:
+            edges = self.edges_reader()
+            self.graph.add_edges_from(edges)
+            for n in self.graph.nodes():
+                self.graph.add_edge(self.node_id, n)
+            with open(pickle_name, 'wb') as handler:
+                pickle.dump(self.graph, handler)
 
     def save_figure(self, fmt='pdf'):
         pos = nx.spectral_layout(self.graph)
@@ -64,11 +76,11 @@ class Graph(object):
 
 
 if __name__ == '__main__':
-    g = Graph(0)
-    graph = g.graph
-    g.graph_generator()
+    ego = Ego(107)
+    graph = ego.graph
+    ego.graph_generator()
     l = len(graph.nodes())
     # l = len(g.graph.edges())
     # print(l)
-    g.info()
+    ego.info()
     # g.save_figure()
