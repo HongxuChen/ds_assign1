@@ -7,9 +7,12 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 import conf
+import log_helper
 
 
 class Ego(object):
+    _logger = log_helper.get_logger()
+
     def __init__(self, node_id):
         self.node_id = str(node_id)
         self.dir = conf.data_dir
@@ -27,21 +30,14 @@ class Ego(object):
                 id_list = line.split()[1:]
                 yield [int(item) for item in id_list]
 
-    def info(self):
-        print(len(self.graph.nodes()))
-        print(len(self.graph.edges()))
-        # print(sum(1 for _ in nx.find_cliques(self.graph)))
-        # print(len(list(nx.find_cliques(self.graph))))
-        print(nx.clustering(self.graph))
-        print(nx.average_clustering(self.graph))
-        # print(nx.max_clique(self.graph))
-
     def graph_generator(self):
         pickle_name = self.get_fname('pickle')
         if os.path.isfile(pickle_name):
+            self._logger.debug('load {}'.format(pickle_name))
             with open(pickle_name, 'rb') as handler:
                 self.graph = pickle.load(handler)
         else:
+            self._logger.debug('create {}'.format(pickle_name))
             edges = self.edges_reader()
             self.graph.add_edges_from(edges)
             for n in self.graph.nodes():
@@ -82,5 +78,4 @@ if __name__ == '__main__':
     l = len(graph.nodes())
     # l = len(g.graph.edges())
     # print(l)
-    ego.info()
     # g.save_figure()
