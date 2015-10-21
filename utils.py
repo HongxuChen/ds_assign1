@@ -4,6 +4,7 @@ import os
 import time
 
 curdir = os.path.abspath(os.path.dirname(__file__))
+data_root = os.path.join(curdir, 'data')
 combined_fname = 'combined.gz'
 ext_list = ['circles', 'edges', 'egofeat', 'feat', 'featnames']
 
@@ -27,7 +28,7 @@ def timeit(method):
 
 
 def get_data_dir(name):
-    return os.path.join(curdir, name)
+    return os.path.join(data_root, name)
 
 
 def get_gzip_fname(name):

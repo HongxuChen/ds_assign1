@@ -132,4 +132,4 @@ target/
 
 grid.edgelist
 *.pickle
-/twitter/
+/data/twitter/

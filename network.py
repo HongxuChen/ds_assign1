@@ -17,7 +17,6 @@ import utils
 class Network(object):
     _logger = log_helper.get_logger()
 
-    @utils.timeit
     def __init__(self, graph):
         self.graph = graph
 
