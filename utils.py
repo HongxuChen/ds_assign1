@@ -47,8 +47,9 @@ def collect_ego_list(name):
 
 def collect_ego_set(name):
     l = collect_ego_list(name)
-    if l is None or len(l):
+    if l is None or len(l) == 0:
         return None
+    return l
 
 
 def size_counter(name):

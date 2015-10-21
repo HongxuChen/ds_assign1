@@ -1,10 +1,19 @@
 Experiment 1
 ============
 
-- community detection parts N
-- used for random partition and metis
-
 * compute local size / total
 -- node_list is full
 -- node_list is collected from ego_list
 -- node_list collected with thredshold
+
+For undirected graphs:
+
+- community detection parts N
+- used for random partition and metis
+
+Experiment 2
+============
+
+For graphs:
+
+select different N

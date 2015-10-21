@@ -20,29 +20,21 @@ def dump_locality(p, partitions, node_set):
     print(', '.join(s))
 
 
-def run(name, step):
-    gzip_fname = utils.get_gzip_fname(name)
-    s = network.Network.from_combined(name, gzip_fname)
-    p = Partitioner(s.graph)
-    graph_info = GraphInfo(s.graph)
-    cd_partition = p.community_detection()
-    parts = len(cd_partition)
-    metis_partition = p.metis_partition(parts)
-    rnd_partition = p.random_partition(parts)
-
-    partitions = [cd_partition, metis_partition, rnd_partition]
-
+def locality_with_ego(name, p, partitions):
     ego_set = utils.collect_ego_set(name)
     if ego_set is not None:
-        print('ego_set')
+        print('ego_set', end='\t')
         dump_locality(p, partitions, ego_set)
 
+
+def locality_with_degrees(graph, p, partitions, step):
     percentage_list = [float(i) / step for i in xrange(1, step + 1)]
-    node_num = len(s.graph.nodes())
+    graph_info = GraphInfo(graph)
+    node_num = len(graph.nodes())
     sorted_degree = graph_info.sorted_degree
     for percent in percentage_list:
         number = int(node_num * percent)
-        print('percentage={} nodes={}'.format(percent, number))
+        print('percentage={} nodes={}'.format(percent, number), end='\t')
         sliced_nodes = sorted_degree[:number]
         node_set = set()
         for n, d in sliced_nodes:
@@ -50,5 +42,35 @@ def run(name, step):
         dump_locality(p, partitions, node_set)
 
 
+def experiment1(name, step):
+    gzip_fname = utils.get_gzip_fname(name)
+    s = network.Network.from_combined(name, gzip_fname)
+    p = Partitioner(s.graph)
+    cd_partition = p.community_detection()
+    parts = len(cd_partition)
+    print('community parts: {}'.format(parts))
+    metis_partition = p.metis_partition(parts)
+    rnd_partition = p.random_partition(parts)
+
+    partitions = [cd_partition, metis_partition, rnd_partition]
+    locality_with_ego(name, p, partitions)
+    locality_with_degrees(s.graph, p, partitions, step)
+
+
+def experiment2(name, step, max_partition):
+    gzip_fname = utils.get_gzip_fname(name)
+    s = network.Network.from_combined(name, gzip_fname)
+    graph = s.graph
+    p = Partitioner(graph)
+
+    for parts in range(2, max_partition):
+        print('\nparts={}'.format(parts))
+        metis_partition = p.metis_partition(parts)
+        rnd_partition = p.random_partition(parts)
+        partitions = [metis_partition, rnd_partition]
+        locality_with_degrees(graph, p, partitions, step)
+
+
 if __name__ == '__main__':
-    run('dblp', 5)
+    # experiment1('facebook', 5)
+    experiment2('facebook', 5, 8)
