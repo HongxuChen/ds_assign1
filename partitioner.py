@@ -48,16 +48,21 @@ class Partitioner(object):
                 neighbor_set = self.get_neighbor_set(node_id)
                 local_set = neighbor_set.intersection(partition_set)
                 return local_set
-        assert (False and "node_id not in Graph")
+        assert (False and 'node_id={}'.format(node_id))
 
-    def locality_percentage(self, partition_list, node_list):
+    def locality_percentage(self, partition_list, note_set):
         local = 0
         total = 0
-        for node_id in node_list:
+        for node_id in note_set:
             local_set_size = self.get_local_set(partition_list, node_id)
             local += len(local_set_size)
             total += len(self.graph.neighbors(node_id))
         return float(local) / float(total)
+
+    def driver(self):
+        ego_set = utils.collect_ego_set()
+        print('for ego_set')
+        cd_partition = self.community_detection()
 
     @staticmethod
     def dump_partition(partition_list):

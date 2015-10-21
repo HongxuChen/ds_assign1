@@ -4,6 +4,7 @@ from __future__ import print_function
 import operator
 
 import networkx as nx
+
 import conf
 import social
 import utils
@@ -12,15 +13,12 @@ import utils
 class GraphInfo(object):
     def __init__(self, graph):
         self.graph = graph
-
-    def separation(self):
-        pass
+        self.init()
 
     def clustering(self):
         return nx.average_clustering(self.graph)
 
-    def shortest_paths(self):
-        # diameter
+    def lsp(self):
         shortest_path_dict_dict = nx.all_pairs_shortest_path_length(self.graph)
         diameter = 0
         for shortest_path_dict in shortest_path_dict_dict.values():
@@ -47,14 +45,7 @@ class GraphInfo(object):
 
     def triangles(self):
         triangles_dict = nx.triangles(self.graph)
-        print('triangles: {}'.format(sum([v for v in triangles_dict.values()])))
-
-    def info(self):
-        print('nodes: {}'.format(len(self.graph.nodes())))
-        print('edges: {}'.format(len(self.graph.edges())))
-        print('diameter: {}'.format(self.shortest_paths()))
-        print('Average clustering coefficient {}'.format(self.clustering()))
-        print('degrees\n{}'.format(self.degrees()))
+        return sum([v for v in triangles_dict.values()])
 
     def degrees(self, ego_set=None):
         degree_dict = self.graph.degree()
@@ -67,9 +58,24 @@ class GraphInfo(object):
                 filtered.append(e)
         return filtered
 
+    # noinspection PyAttributeOutsideInit
+    def init(self):
+        self.node_num = len(self.graph.nodes())
+        self.edge_num = len(self.graph.edges())
+        self.sorted_degree = self.degrees()
+
+    # noinspection PyAttributeOutsideInit
+    def dump_info(self):
+        self.diameter = self.lsp()
+        self.clustering_efficient = self.clustering()
+        print('nodes: {}'.format(self.node_num))
+        print('edges: {}'.format(self.edge_num))
+        print('diameter: {}'.format(self.diameter))
+        print('Average clustering coefficient {}'.format(self.clustering_efficient))
+        print('degrees\n{}'.format(self.sorted_degree))
+
 
 if __name__ == '__main__':
     s = social.Social.from_combined(conf.gzip_file)
     ego_set = utils.collect_ego_set()
     g_info = GraphInfo(s.graph)
-    print(g_info.degrees(ego_set))
