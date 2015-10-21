@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
-import os
 import gzip
 
 import networkx as nx
 
 import conf
 import ego
-from graph_info import GraphInfo
+import graph_info
 import log_helper
+import utils
 
 
 # noinspection PyPep8Naming
@@ -22,7 +22,7 @@ class Social(object):
         G = nx.Graph()
         with gzip.open(gzip_file, 'r') as gzip_data:
             for l in gzip_data:
-                edges = l.split()
+                edges = [int(e) for e in l.split()]
                 assert (len(edges) == 2)
                 G.add_edge(*edges)
         return cls(G)
@@ -38,20 +38,9 @@ class Social(object):
             G.add_edges_from(graph.edges())
         return cls(G)
 
-    @staticmethod
-    def collect_ego_list():
-        ego_list = []
-        data_dir = conf.data_dir
-        for f in os.listdir(data_dir):
-            if f.endswith('.circles'):
-                base = os.path.splitext(f)[0]
-                ego_list.append(int(base))
-        return sorted(ego_list)
-
 
 if __name__ == '__main__':
     log_helper.init_logger()
-    ego_list = Social.collect_ego_list()
+    ego_list = utils.collect_ego_list()
     social = Social.from_combined(conf.gzip_file)
-    g_info = GraphInfo(social.graph)
-    g_info.info()
+    g_info = graph_info.GraphInfo(social.graph)
