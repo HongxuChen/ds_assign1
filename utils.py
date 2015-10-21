@@ -20,7 +20,7 @@ def timeit(method):
         result = method(*args, **kw)
         te = time.time()
 
-        print('{} took {:2.6f}s'.format(method.__name__, te - ts))
+        print('- {:40} took {:2.6f}s'.format(method.__name__, te - ts))
         return result
 
     return timed
@@ -46,7 +46,9 @@ def collect_ego_list(name):
 
 
 def collect_ego_set(name):
-    return set(collect_ego_list(name))
+    l = collect_ego_list(name)
+    if l is None or len(l):
+        return None
 
 
 def size_counter(name):

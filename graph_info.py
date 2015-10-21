@@ -75,7 +75,6 @@ class GraphInfo(object):
         print('edges: {}'.format(self.edge_num))
         print('diameter: {}'.format(self.diameter))
         print('Average clustering coefficient {}'.format(self.clustering_efficient))
-        # print('degrees\n{}'.format(self.sorted_degree))
 
 
 if __name__ == '__main__':
