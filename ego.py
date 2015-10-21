@@ -6,17 +6,20 @@ import pickle
 import networkx as nx
 import matplotlib.pyplot as plt
 
-import conf
 import log_helper
+import utils
 
 
 class Ego(object):
     _logger = log_helper.get_logger()
 
-    def __init__(self, node_id):
+    def __init__(self, name, node_id):
         self.node_id = str(node_id)
-        self.dir = conf.data_dir
-        self.graph = nx.Graph()
+        self.dir = utils.get_data_dir(name)
+        if utils.graph_directness[name]:
+            self.graph = nx.DiGraph()
+        else:
+            self.graph = nx.Graph()
 
     def get_fname(self, ext):
         fname = self.node_id + '.' + ext
@@ -72,7 +75,7 @@ class Ego(object):
 
 
 if __name__ == '__main__':
-    ego = Ego(107)
+    ego = Ego('facebook', 107)
     graph = ego.graph
     ego.graph_generator()
     l = len(graph.nodes())

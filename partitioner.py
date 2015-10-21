@@ -4,10 +4,10 @@ from collections import defaultdict
 import random
 
 import community
+
 import nxmetis
 
-import conf
-import social
+import network
 import utils
 
 
@@ -15,6 +15,7 @@ class Partitioner(object):
     def __init__(self, graph):
         self.graph = graph
 
+    @utils.timeit
     def community_detection(self):
         partition = community.best_partition(self.graph)
         cd_dict = defaultdict(set)
@@ -22,11 +23,13 @@ class Partitioner(object):
             cd_dict[partition[p]].add(p)
         return cd_dict.values()
 
+    @utils.timeit
     def metis_partition(self, parts):
         edgecuts, metis_list = nxmetis.partition(self.graph, parts)
         metis_set_list = [set(l) for l in metis_list]
         return metis_set_list
 
+    @utils.timeit
     def random_partition(self, parts):
         node_list = self.graph.nodes()
         random.shuffle(node_list)
@@ -59,11 +62,6 @@ class Partitioner(object):
             total += len(self.graph.neighbors(node_id))
         return float(local) / float(total)
 
-    def driver(self):
-        ego_set = utils.collect_ego_set()
-        print('for ego_set')
-        cd_partition = self.community_detection()
-
     @staticmethod
     def dump_partition(partition_list):
         for d in partition_list:
@@ -71,11 +69,13 @@ class Partitioner(object):
 
 
 if __name__ == '__main__':
-    s = social.Social.from_combined(conf.gzip_file)
+    name = 'facebook'
+    gzip_fname = utils.get_gzip_fname('facebook')
+    s = network.Network.from_combined(name, gzip_fname)
     p = Partitioner(s.graph)
     cd_partition = p.community_detection()
     parts = len(cd_partition)
-    ego_list = utils.collect_ego_list()
+    ego_list = utils.collect_ego_list(name)
     print(ego_list)
     cd_locality = p.locality_percentage(cd_partition, ego_list)
     print(cd_locality)

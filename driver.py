@@ -1,18 +1,25 @@
 #!/usr/bin/env python
-import conf
+
+from __future__ import print_function
+
+import sys
 from graph_info import GraphInfo
 from partitioner import Partitioner
-import social
+import network
 import utils
 
 
 def run_once(p, partitions, node_set):
+    if node_set is None or len(node_set):
+        print('node_set is None or empty', file=sys.stderr)
+        return
     locality = [p.locality_percentage(partition, node_set) for partition in partitions]
     print(locality)
 
 
-def run(step):
-    s = social.Social.from_combined(conf.gzip_file)
+def run(name, step):
+    gzip_fname = utils.get_gzip_fname(name)
+    s = network.Network.from_combined(name, gzip_fname)
     p = Partitioner(s.graph)
     graph_info = GraphInfo(s.graph)
     cd_partition = p.community_detection()
@@ -21,7 +28,7 @@ def run(step):
     rnd_partition = p.random_partition(parts)
     partitions = [cd_partition, metis_partition, rnd_partition]
 
-    ego_set = utils.collect_ego_set()
+    ego_set = utils.collect_ego_set(name)
     print('for ego_set')
     run_once(p, partitions, ego_set)
 
@@ -39,4 +46,4 @@ def run(step):
 
 
 if __name__ == '__main__':
-    run(5)
+    run('dblp', 5)

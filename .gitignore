@@ -132,3 +132,4 @@ target/
 
 grid.edgelist
 *.pickle
+/twitter/

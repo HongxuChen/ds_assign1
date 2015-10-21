@@ -1,12 +1,43 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import os
+import time
 
-import conf
+curdir = os.path.abspath(os.path.dirname(__file__))
+combined_fname = 'combined.gz'
+ext_list = ['circles', 'edges', 'egofeat', 'feat', 'featnames']
+
+graph_directness = {
+    'facebook': False,
+    'dblp': False,
+    'twitter': True
+}
 
 
-def collect_ego_list():
+def timeit(method):
+    def timed(*args, **kw):
+        ts = time.time()
+        result = method(*args, **kw)
+        te = time.time()
+
+        print('{} took {:2.6f}s'.format(method.__name__, te - ts))
+        return result
+
+    return timed
+
+
+def get_data_dir(name):
+    return os.path.join(curdir, name)
+
+
+def get_gzip_fname(name):
+    data_dir = get_data_dir(name)
+    return os.path.join(data_dir, combined_fname)
+
+
+def collect_ego_list(name):
     ego_list = []
-    data_dir = conf.data_dir
+    data_dir = get_data_dir(name)
     for f in os.listdir(data_dir):
         if f.endswith('.circles'):
             base = os.path.splitext(f)[0]
@@ -14,17 +45,18 @@ def collect_ego_list():
     return ego_list
 
 
-def collect_ego_set():
-    return set(collect_ego_list())
+def collect_ego_set(name):
+    return set(collect_ego_list(name))
 
 
-def size_counter():
-    for f in os.listdir(conf.data_dir):
+def size_counter(name):
+    data_dir = get_data_dir(name)
+    for f in os.listdir(data_dir):
         if f.endswith('.circles'):
             base = os.path.splitext(f)[0]
-            for ext in conf.ext_list:
+            for ext in ext_list:
                 fname = base + '.' + ext
-                fpath = os.path.join(conf.data_dir, fname)
+                fpath = os.path.join(data_dir, fname)
                 assert os.path.isfile(fpath)
                 statinfo = os.stat(fpath)
                 print('{:20s} {}'.format(fname, statinfo.st_size))
