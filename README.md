@@ -2,12 +2,10 @@ Experiment 1
 ============
 
 * compute local size / total
--- node_list is full
--- node_list is collected from ego_list
--- node_list collected with thredshold
+-- node_set is collected fr-om ego_set
+-- node_set collected with thredshold
 
 For undirected graphs:
-
 - community detection parts N
 - used for random partition and metis
 

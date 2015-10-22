@@ -73,4 +73,4 @@ def experiment2(name, step, max_partition):
 
 if __name__ == '__main__':
     # experiment1('facebook', 5)
-    experiment2('facebook', 5, 8)
+    experiment2('dblp', 5, 8)

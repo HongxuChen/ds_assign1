@@ -69,12 +69,15 @@ class GraphInfo(object):
 
     # noinspection PyAttributeOutsideInit
     def dump_info(self):
-        self.diameter = self._diameter()
+        # self.diameter = self._diameter()
         self.clustering_efficient = self._clustering()
         print('nodes: {}'.format(self.node_num))
         print('edges: {}'.format(self.edge_num))
-        print('diameter: {}'.format(self.diameter))
-        print('Average clustering coefficient {}'.format(self.clustering_efficient))
+        # print('diameter: {}'.format(self.diameter))
+        print('average clustering coefficient: {}'.format(self.clustering_efficient))
+        degrees = sum([d[1] for d in self.sorted_degree])
+        nodes = float(len(self.graph.nodes()))
+        print('average degrees: {}'.format(degrees / nodes))
 
 
 if __name__ == '__main__':
