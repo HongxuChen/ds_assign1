@@ -20,3 +20,45 @@ The whole implementation is available at [6].
 \subsection{Comparison of different Partitioning Approaches}
 
 This experiment compares the locality for different partition strategies. Here, we assume that each node in the graph has an equal opportunity to access its neighbors, and additionally each neighbor node is accessed equally. Since we do not apply any replication if the neighbor node is stored remotely, the locality for a single is measured as the ratio of neighbor nodes that are in the same group as the interesting node.
+
+\begin{figure}[t]
+  \centering
+  \hfill
+  \subfigure[Line Chart]{\includegraphics[width=0.45\columnwidth]{facebook_exp1.png}}
+  \hfill
+  \subfigure[Bar Chart]{\includegraphics[width=0.45\columnwidth]{facebook_exp1_bar.png}}
+  \hfill
+  \caption{Facebook Locality}\label{fig:exp1_facebook}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \hfill
+  \subfigure[Line Chart]{\includegraphics[width=0.45\columnwidth]{dblp_exp1.png}}
+  \hfill
+  \subfigure[Bar Chart]{\includegraphics[width=0.45\columnwidth]{dblp_exp1_bar.png}}
+  \hfill
+  \caption{Facebook Locality}\label{fig:exp1_dblp}
+\end{figure}
+
+From Figure \ref{fig:exp1_facebook} it is obvious that the random partition approach has the lowest average locality, the value is around $6\%$, while the other two have approimated $90\%$. It is also interesting to notice that those nodes that have more neighbors have a greater impact on the locality.
+
+\subsection{The Separated Parts Impact on Locality}
+
+\begin{figure}[t]
+  \hfill
+  \subfigure[facebook]{\includegraphics[width=0.45\columnwidth]{facebook_exp2.png}}
+  \hfill
+  \subfigure[dblp]{\includegraphics[width=0.45\columnwidth]{dblp_exp2.png}}
+  \hfill
+  \caption{Facebook Locality}\label{fig:exp2}
+\end{figure}
+
+\begin{figure}[t]
+  \hfill
+  \subfigure[facebook]{\includegraphics[width=0.45\columnwidth]{facebook_exp2_rnd.png}}
+  \hfill
+  \subfigure[dblp]{\includegraphics[width=0.45\columnwidth]{dblp_exp2_rnd.png}}
+  \hfill
+  \caption{Facebook Locality}\label{fig:exp2}
+\end{figure}

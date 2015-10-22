@@ -2,6 +2,7 @@
 %\usepackage[landscape]{geometry}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{subfigure}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -10,7 +11,7 @@
 \usepackage{semantic}
 \usepackage{empheq}
 
-\graphicspath{{fig/}{../results/}{graph/}}
+\graphicspath{{../}{../results/}{fig/}}
 \DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.jpeg}
 
 \makeatletter
@@ -30,4 +31,8 @@
 \input{05-experiment}
 \input{06-limitations}
 \input{07-conclusion}
+
+\bibliographystyle{abbrv}
+\bibliography{ref}
+
 \end{document}

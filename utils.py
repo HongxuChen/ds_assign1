@@ -8,6 +8,13 @@ data_root = os.path.join(curdir, 'data')
 combined_fname = 'combined.gz'
 ext_list = ['circles', 'edges', 'egofeat', 'feat', 'featnames']
 
+result_dir = os.path.join(curdir, 'results')
+if not os.path.isdir(result_dir):
+    os.mkdir(result_dir)
+
+def get_result_fname(name):
+    return os.path.join(result_dir, name)
+
 graph_directness = {
     'facebook': False,
     'dblp': False,

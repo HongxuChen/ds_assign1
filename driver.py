@@ -61,7 +61,7 @@ def plot1(name, xlist, ylist):
     plt.ylabel('Locality Percentage')
     plt.title('{}: step={}'.format(name, len(xlist)))
     fname = name + '_exp1.png'
-    plt.savefig(fname)
+    plt.savefig(utils.get_result_fname(fname))
     plt.clf()
 
 @utils.timeit
@@ -77,7 +77,7 @@ def plot1_bar(name, xlist, ylist):
     ax.legend(label, loc='center')
     plt.title('{}: step={}'.format(name, len(xlist)))
     fname = name + '_exp1_bar.png'
-    plt.savefig(fname)
+    plt.savefig(utils.get_result_fname(fname))
     plt.clf()
 
 
@@ -93,7 +93,7 @@ def plot2(name, labels, xlist, ylist):
     plt.ylabel('Locality Percentage')
     plt.title('{}: Average Localities for different Parts'.format(name))
     fname = name + '_exp2.png'
-    plt.savefig(fname)
+    plt.savefig(utils.get_result_fname(fname))
     plt.clf()
 
 
@@ -110,7 +110,7 @@ def plot2_random_partition(name, xlist, ylist):
     plt.ylim([0.5, 1.5])
     pylab.grid(True)
     fname = name + '_exp2_rnd.png'
-    plt.savefig(fname)
+    plt.savefig(utils.get_result_fname(fname))
     plt.clf()
 
 
@@ -180,7 +180,7 @@ def exp2(name, step, max_partition):
 if __name__ == '__main__':
     init_logger()
     info_dict = {}
-    data_list = ['facebook', 'dblp', 'youtube']
+    data_list = ['facebook', 'dblp']
     for name in data_list:
         info = exp1(name, 10)
         info_dict[name] = info

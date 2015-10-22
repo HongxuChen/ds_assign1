@@ -7,7 +7,9 @@ import networkx as nx
 
 import network
 import utils
+import community
 from utils import timeit
+import matplotlib.pyplot as plt
 
 
 class GraphInfo(object):
@@ -79,6 +81,13 @@ class GraphInfo(object):
         nodes = float(len(self.graph.nodes()))
         print('average degrees: {}'.format(degrees / nodes))
 
+    def draw(self):
+        G = self.graph
+        part = community.best_partition(G)
+        values = [part.get(node) for node in G.nodes()]
+        nx.draw_spring(G, cmap = plt.get_cmap('jet'), node_color = values, node_size=30, with_labels=False)
+        plt.savefig('network.pdf')
+
 
 if __name__ == '__main__':
     name = 'facebook'
@@ -86,4 +95,4 @@ if __name__ == '__main__':
     s = network.Network.from_combined(name, gzip_file)
     ego_set = utils.collect_ego_set(name)
     g_info = GraphInfo(s.graph)
-    g_info.dump_info()
+    g_info.draw()
