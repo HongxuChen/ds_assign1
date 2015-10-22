@@ -11,6 +11,7 @@ ext_list = ['circles', 'edges', 'egofeat', 'feat', 'featnames']
 graph_directness = {
     'facebook': False,
     'dblp': False,
+    'youtube': False,
     'twitter': True
 }
 

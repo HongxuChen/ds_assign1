@@ -133,3 +133,4 @@ target/
 grid.edgelist
 *.pickle
 /data/twitter/
+/log/
