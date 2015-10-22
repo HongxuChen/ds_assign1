@@ -1,0 +1,33 @@
+\documentclass[12pt]{article}
+%\usepackage[landscape]{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{semantic}
+\usepackage{empheq}
+
+\graphicspath{{fig/}{../results/}{graph/}}
+\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.jpeg}
+
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\title{Locality Analysis Against Graph Partitioning}
+\date{\today}
+\author{CHEN Hongxu\\XU Zhengzi\\NIE Xiao}
+
+\begin{document}
+\maketitle
+\input{01-introduction}
+\input{02-related}
+\input{03-problem}
+\input{04-approach}
+\input{05-experiment}
+\input{06-limitations}
+\input{07-conclusion}
+\end{document}

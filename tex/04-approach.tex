@@ -1,0 +1,40 @@
+\section{Methodology}
+
+\subsection{Algorithms}
+
+In the existing studies of online social networks scalability, we found researchers have developed various partition algorithms to preserve the data locality while reduction the overhead. In this project, we decide to leverage the four graph partition algorithms, namely random partitioning, METIS graph partitioning, community detection algorithm, and SPAR to test the partition performance in the case where different number of server is available.
+
+The social network which need to be partition can be represented by node and edges, where one node specifies one active user in the network, and the edge, which can be directed or indirected, stands for the existence of relationship between the two connected nodes.
+
+
+\subsubsection{Random Partition}
+
+As the name suggests, random partition algorithm will cluster all the node in a random manner. The possibility for a user node to be stored in a particular server is equal to the possibility for it to be stored in another ones. Since there is no optimization involved in the algorithm, we expected that it will have the highest overhead among all algorithm. Thus, it can server as the baseline for our experiment.  
+
+Another reason for choosing this algorithm is that, since we are focusing on small business with relatively small number of server available, some of the advanced techniques may not function well. Using the random partition algorithm in this situation may reduce the the effort in implementation while achieves similar performance with those advanced algorithm. Even for some large corporation such as facebook, random partition is widely used for simplicity. 
+
+\subsection{Community Detection}
+
+Community detection algorithm bases on the assumption that the input network involves the community structure [1] which can be detected and used as the criteria to perform the partition. The community structure is a network in which nodes can be easily divided into groups/communities in which nodes are densely connected to each other. Whereas the inter-connection between nodes from different group is relatively sparse compared to the intra-connection of nodes within the group.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.6\columnwidth]{cd.png}
+  \caption{Community Structure Network}\label{fig:cd}
+\end{figure}
+
+
+Figure 1 has depicted a typical community structure network with three groups. The community detection algorithm tries to identify the structural information in the network and leverage the group information to partition the node. There are various approaches to identify the groups in the network. Each of them has its own advantages in some circumstances. According to Andrea [2], among various community detection algorithm, Infomap [3] has the best performance over the others. In the experiment, we choose the algorithm from xx [4]. Advantages??
+
+
+\subsection{METIS}
+
+METIS is a multilevel graph partitioning algorithm [1], which consists several stages to partition a large graph. First, it tries to reduce the size of the group by collapsing the nodes and edges. Two similar nodes are grouped together and be represented by a coarser mesh. The coarser mesh then serves as a new large node with weighted edges specify the number of connection between the two meshes. After that, the process is repeated until the graph is small enough for later processing (usually less than $3$k $\sim 5$k nodes). Since the graph is small, METIS then perform a high-cost but high-quality spectral partitioning algorithm on the graph. After the partitioning, a refinement or un-coarsening phase is applied to the graph to retrieve the node back from the mesh recursively. By using the Kernighan-Lin heuristic algorithm [2], METIS can construct back the original graph with an accurate graph partitioning solution.
+
+Figure 2 has given the basic steps of METIS. In the experiment, we used the METIS package from [3]. It is a fast but accurate implementation of METIS which has been used in academic and industrial organizations.
+
+\subsubsection{SPAR}
+
+SPAR is a dynamic graph partitioning algorithm, which guarantees data locality by adding or removing nodes and edges at run time[1]. It makes a balance between the random partition algorithm which costs a lot when it reads the user profile and the full replication algorithm which require more writing operation to the server. SPAR only performs the replication/deletion when a change of the network takes place. In other words, SPAR regards the user's’ action as heuristics to help to build up the node partition layout in the server.
+
+In our experiment, since we use only one replication for every data, whereas SPAR dynamically creates replicas for nodes neighbour in different server, we excluded this method in the experiment. However, the algorithm itself has good performance and may become a choice for the small companies.

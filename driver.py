@@ -5,7 +5,6 @@ import time
 import json
 
 from graph_info import GraphInfo
-import log_helper
 from partitioner import Partitioner
 import network
 import utils
@@ -13,9 +12,10 @@ import utils
 import matplotlib.pyplot as plt
 import numpy as np
 import pylab
-from matplotlib.font_manager import FontProperties
 
 import matplotlib as mpl
+
+from log_helper import init_logger, get_logger
 
 mpl.rcParams['text.usetex'] = True
 mpl.rcParams['text.latex.unicode'] = True
@@ -30,6 +30,7 @@ def single_locality(p, partition, node_set):
     return p.locality_percentage(partition, node_set)
 
 
+@utils.timeit
 def get_locality_partition_list(graph_info, p, partitions, step):
     graph = graph_info.graph
     node_num = len(graph.nodes())
@@ -49,7 +50,7 @@ def get_locality_partition_list(graph_info, p, partitions, step):
         localities.append(locality_for_partition)
     return percentage_list, localities
 
-
+@utils.timeit
 def plot1(name, xlist, ylist):
     pylab.grid(True)
     for i in xrange(len(ylist)):
@@ -63,7 +64,7 @@ def plot1(name, xlist, ylist):
     plt.savefig(fname)
     plt.clf()
 
-
+@utils.timeit
 def plot1_bar(name, xlist, ylist):
     pylab.grid(True)
     width = 0.15
@@ -80,6 +81,7 @@ def plot1_bar(name, xlist, ylist):
     plt.clf()
 
 
+@utils.timeit
 def plot2(name, labels, xlist, ylist):
     pylab.grid(True)
     for i in xrange(len(ylist)):
@@ -95,6 +97,7 @@ def plot2(name, labels, xlist, ylist):
     plt.clf()
 
 
+@utils.timeit
 def plot2_random_partition(name, xlist, ylist):
     yy = []
     for x, y in zip(xlist, ylist):
@@ -111,6 +114,7 @@ def plot2_random_partition(name, xlist, ylist):
     plt.clf()
 
 
+@utils.timeit
 def exp1_impl(name, graph_info, p, partitions, step):
     percentage_list, localities = get_locality_partition_list(graph_info, p, partitions, step)
     plot1(name, percentage_list, localities)
@@ -118,9 +122,12 @@ def exp1_impl(name, graph_info, p, partitions, step):
 
 
 def duration(then):
-    return time.time() - then
+    t = time.time() - then
+    get_logger().info('takes {}'.format(t))
+    return t
 
 
+@utils.timeit
 def exp1(name, step):
     exp1_info = {}
     gzip_fname = utils.get_gzip_fname(name)
@@ -144,7 +151,7 @@ def exp1(name, step):
     return exp1_info
 
 
-# step fixed
+@utils.timeit
 def exp2_impl(name, graph_info, p, max_partition, step):
     parts_num = range(2, max_partition + 1)
     locality_parts_list = []
@@ -161,6 +168,7 @@ def exp2_impl(name, graph_info, p, max_partition, step):
     plot2_random_partition(name, parts_num, ylist[1])
 
 
+@utils.timeit
 def exp2(name, step, max_partition):
     gzip_fname = utils.get_gzip_fname(name)
     s = network.Network.from_combined(name, gzip_fname)
@@ -169,12 +177,10 @@ def exp2(name, step, max_partition):
     p = Partitioner(graph)
     exp2_impl(name, graph_info, p, max_partition, step)
 
-
 if __name__ == '__main__':
-    log_helper.init_logger()
+    init_logger()
     info_dict = {}
     data_list = ['facebook', 'dblp', 'youtube']
-    data_list = ['facebook']
     for name in data_list:
         info = exp1(name, 10)
         info_dict[name] = info

@@ -1,0 +1,22 @@
+\section{Experiment Setup}
+
+\subsection{Data description and Pre-processing}
+
+The whole implementation is available at [6].
+
+\begin{table}[]
+\centering
+\caption{Basic Graph Information}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\textbf{} & \textbf{\# node} & \textbf{\# edge} & \textbf{clustering} & \textbf{\# triangles} & \textbf{type} \\ \hline
+\textbf{Facebook} & 4039 & 88234 & 0.6055 & 1612010 & social \\ \hline
+\textbf{DBLP} & 317080 & 1049866 & 0.6324 & 2224385 & \begin{tabular}[c]{@{}c@{}}ground-truth\\ communities\end{tabular} \\ \hline
+\textbf{YouTube} & 1134890 & 2987624 & 0.0808 & 3056386 & \begin{tabular}[c]{@{}c@{}}ground-truth\\ communities\end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Comparison of different Partitioning Approaches}
+
+This experiment compares the locality for different partition strategies. Here, we assume that each node in the graph has an equal opportunity to access its neighbors, and additionally each neighbor node is accessed equally. Since we do not apply any replication if the neighbor node is stored remotely, the locality for a single is measured as the ratio of neighbor nodes that are in the same group as the interesting node.
