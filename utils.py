@@ -13,6 +13,7 @@ if not os.path.isdir(result_dir):
     os.mkdir(result_dir)
 
 def get_result_fname(name):
+    assert os.path.isdir(result_dir)
     return os.path.join(result_dir, name)
 
 graph_directness = {
