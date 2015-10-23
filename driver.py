@@ -25,6 +25,7 @@ colors = 'rgb'
 label = ['Community Detection', 'Metis', 'Random']
 
 
+@utils.timeit
 def single_locality(p, partition, node_set):
     assert (node_set is not None and len(node_set) != 0)
     return p.locality_percentage(partition, node_set)
@@ -180,11 +181,12 @@ def exp2(name, step, max_partition):
 if __name__ == '__main__':
     init_logger()
     info_dict = {}
-    data_list = ['facebook', 'dblp']
+    # data_list = ['facebook', 'dblp']
+    data_list = ['youtube']
     for name in data_list:
-        info = exp1(name, 10)
+        info = exp1(name, 5)
         info_dict[name] = info
     with open('exp1_info.json', 'w') as jsdata:
         json.dump(info_dict, jsdata, indent=2)
     for name in data_list:
-        exp2(name, 5, 16)
+        exp2(name, 4, 8)

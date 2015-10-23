@@ -125,10 +125,10 @@ docs/_build/
 # PyBuilder
 target/
 
-*.pdf
-*.jpg
-*.jpeg
-*.png
+# *.pdf
+# *.jpg
+# *.jpeg
+# *.png
 
 grid.edgelist
 *.pickle
